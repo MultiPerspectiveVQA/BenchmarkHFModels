@@ -1,16 +1,26 @@
 # Python libraries
 import argparse
+import pandas as pd
 
 # package files
 from load_dataset import load_vqa_therapy
 from prompt import append_prompts
+from infer import get_results
+
+def write_results(outputs, filename):
+    df = pd.DataFrame(outputs, columns=['image_id','question_id','image_filename','binary_label','question','answers','prompt','result'])
+    df.to_csv(filename)
 
 def main(args):
     print('loading dataset')
     dataset = load_vqa_therapy(args.split)
     print('Building prompts')
     dataset = append_prompts(dataset, args)
-    print(dataset[0]['prompt'])
+    print('Fecthing results')
+    results = get_results(dataset, args.model)
+    print('Writing results')
+    write_results(args.output_filename)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
