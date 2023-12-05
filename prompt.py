@@ -1,6 +1,7 @@
 from tqdm import tqdm
 
 from Blip2.image_caption_model import gen_image_captions as gen_blip2_image_captions
+from InstructBlip.image_caption_model import gen_image_captions as gen_insblip_image_captions
 
 SIMPLE_STD = 'Question: {question} Answer: {answer} Question: Do all the given answers for the question point to the same visual content in the image?'
 SIMPLE_IMG_CAP = 'Context: {caption} Question: {question} Answer: {answer} Question: Do all the given answers for the question point to the same visual content in the image?'
@@ -39,7 +40,7 @@ def gen_img_caption(dataset, model, img_caption_type):
     if model == 'blip2':
         dataset = gen_blip2_image_captions(dataset, img_caption_type)
     elif model == 'instruct_blip':
-        pass
+        dataset = gen_insblip_image_captions(dataset, img_caption_type)
     else:
         raise Exception('invalid model/ image caption type')
     return dataset
