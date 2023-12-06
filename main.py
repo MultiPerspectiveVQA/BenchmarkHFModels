@@ -21,7 +21,7 @@ def main(args):
     print('Fecthing results')
     results = get_results(dataset, args.model)
     print('Writing results')
-    write_results(args.output_filename)
+    write_results(results, args.output_filename)
 
 
 if __name__ == '__main__':
