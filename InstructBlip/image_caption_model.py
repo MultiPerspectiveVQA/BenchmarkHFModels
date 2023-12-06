@@ -7,8 +7,8 @@ SIMPLE_CAP = "A photo of"
 Q_GUIDED_CAP = "Describe this image according to the given question: {question}"
 
 def gen_image_captions(dataset, img_caption_type):
-    processor = InstructBlipProcessor.from_pretrained("Salesforce/blip2-opt-2.7b")
-    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b", torch_dtype=torch.float16)
+    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-flan-t5-xl")
+    processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-flan-t5-xl")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
     caption_col = list()
