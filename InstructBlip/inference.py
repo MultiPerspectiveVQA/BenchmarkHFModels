@@ -5,8 +5,8 @@ from tqdm import tqdm
 
 
 def get_results(dataset):
-    processor = InstructBlipProcessor.from_pretrained("Salesforce/blip2-opt-2.7b")
-    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b", torch_dtype=torch.float16)
+    model = InstructBlipForConditionalGeneration.from_pretrained("Salesforce/instructblip-flan-t5-xl")
+    processor = InstructBlipProcessor.from_pretrained("Salesforce/instructblip-flan-t5-xl")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model.to(device)
     results = []
