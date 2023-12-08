@@ -21,7 +21,7 @@ def gen_simple_qa_prompt(record, template):
 def gen_simple_cap_prompt(record, template):
     prompt = template
     caption, question, answer = record['caption'], record['question'], ', '.join(record['answers'])
-    prompt = prompt.format(question=question, answer=answer)
+    prompt = prompt.format(caption=caption, question=question, answer=answer)
     return {'prompt': prompt}
 
 def gen_multi_ans_qa_prompt(record, template):
