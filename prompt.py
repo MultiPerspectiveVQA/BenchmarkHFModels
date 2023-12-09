@@ -7,9 +7,9 @@ SIMPLE_STD = 'Question: {question} Answer: {answer} Question: Do all the given a
 SIMPLE_IMG_CAP = 'Context: {caption} Question: {question} Answer: {answer} Question: Do all the given answers for the question point to the same visual content in the image?'
 SIMPLE_COT = 'Please answer the following question by reasoning step by step. Question: {question} Answer: {answer} Question: Do all the given answers for the question point to the same visual content in the image?'
 
-MULTI_ANS_STD = 'Indicate every possible answer to the given question. Question: {question}'
-MULTI_ANS_IMG_CAP = 'Context: {caption} Indicate every possible answer to the given question. Question: {question}'
-MULTI_ANS_COT = 'Please indicate every possible answer to the visual question by reasoning step by step. Question: {question}'
+MULTI_ANS_STD = 'Indicate every possible answer to the given question. Question: {question} Answer:'
+MULTI_ANS_IMG_CAP = 'Context: {caption} Indicate every possible answer to the given question. Question: {question} Answer:'
+MULTI_ANS_COT = 'Please indicate every possible answer to the visual question by reasoning step by step. Question: {question} Answer:'
 
 
 def gen_simple_qa_prompt(record, template):
@@ -57,7 +57,7 @@ def append_prompts(dataset, args):
         return dataset.map(gen_multi_ans_qa_prompt, batched=False, fn_kwargs={'template': MULTI_ANS_STD})
     elif args.test_type == 'multi_ans' and args.prompt_type == 'img_cap':
         dataset = gen_img_caption(dataset, args.model, args.img_caption_type)
-        return dataset.map(gen_multi_ans_qa_prompt, batched=False, fn_kwargs={'template': MULTI_ANS_IMG_CAP})
+        return dataset.map(gen_multi_ans_cap_prompt, batched=False, fn_kwargs={'template': MULTI_ANS_IMG_CAP})
     elif args.test_type == 'multi_ans' and args.prompt_type == 'cot':
         return dataset.map(gen_multi_ans_qa_prompt, batched=False, fn_kwargs={'template': MULTI_ANS_COT})
     else:
