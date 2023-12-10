@@ -5,19 +5,39 @@ import pandas as pd
 from tqdm import tqdm
 
 
+# def update_grd_acc(grd_acc, ground_truth, pred):
+#     if type(pred) != str:
+#         return grd_acc
+#     answers = ground_truth.split('|')
+#     total_ans = len(answers)
+#     count = 0
+#     for ans in answers:
+#         reference = [[ans.strip().lower()]]
+#         candidate = [pred.lower()]
+#         score = sentence_bleu(reference, candidate, weights=(1, 0, 0, 0))
+#         count = count + 1 if score >= 0.5 else count
+#     grd_acc =  grd_acc + (count / total_ans) if count != 0 else grd_acc
+#     return grd_acc
+
+
 def update_grd_acc(grd_acc, ground_truth, pred):
     if type(pred) != str:
         return grd_acc
     answers = ground_truth.split('|')
     total_ans = len(answers)
+    pred = pred.lower()
     count = 0
     for ans in answers:
-        reference = [[ans.strip().lower()]]
-        candidate = [pred.lower()]
-        score = sentence_bleu(reference, candidate, weights=(1, 0, 0, 0))
-        count = count + 1 if score >= 0.5 else count
-    grd_acc =  grd_acc + (total_ans / count) if count != 0 else grd_acc
+        ans = ans.lower()
+        token_match = 0
+        for token in ans.split(' '):
+            if token in pred:
+                token_match += 1    
+        token_match /= len(ans.split())
+        count = count + 1 if token_match >= 0.3 else count
+    grd_acc =  grd_acc + (count / total_ans) if count != 0 else grd_acc
     return grd_acc
+
 
 
 def eval(args):

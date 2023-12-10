@@ -11,13 +11,13 @@ def update_same_grd_acc(same_grd_acc, ans):
     else:
         return same_grd_acc
     
-def update_diff_grd_acc(diff_grd_count, ans):
+def update_diff_grd_acc(diff_grd_acc, ans):
     if type(ans) != str:
-        return diff_grd_count
+        return diff_grd_acc
     if any(res in ans for res in ['no', 'No', 'NO']):
-        return diff_grd_count + 1
+        return diff_grd_acc + 1
     else:
-        return diff_grd_count
+        return diff_grd_acc
 
 def eval(args):
     data = pd.read_csv(args.results_file, header=0)
