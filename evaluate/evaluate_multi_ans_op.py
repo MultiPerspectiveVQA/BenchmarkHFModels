@@ -5,21 +5,18 @@ import pandas as pd
 from tqdm import tqdm
 
 
-reference = [['this', 'is', 'small', 'test']]
-candidate = ['this', 'is', 'a', 'test']
-score = sentence_bleu(reference, candidate, weights=(1, 0, 0, 0))
-print(score)
-
 def update_grd_acc(grd_acc, ground_truth, pred):
-    answers = '|'.split(ground_truth)
+    if type(pred) != str:
+        return grd_acc
+    answers = ground_truth.split('|')
     total_ans = len(answers)
     count = 0
     for ans in answers:
-        reference = [[ans.strip()]]
-        candidate = [pred]
+        reference = [[ans.strip().lower()]]
+        candidate = [pred.lower()]
         score = sentence_bleu(reference, candidate, weights=(1, 0, 0, 0))
         count = count + 1 if score >= 0.5 else count
-    grd_acc +=  total_ans / count
+    grd_acc =  grd_acc + (total_ans / count) if count != 0 else grd_acc
     return grd_acc
 
 
@@ -35,7 +32,7 @@ def eval(args):
             diff_grd_acc = update_grd_acc(diff_grd_acc, row['answers'], row['result'])
     overall_accuracy = (same_grd_acc + diff_grd_acc) / (same_grd_count + diff_grd_count)
     same_grd_acc /= same_grd_count
-    diff_grd_count /= diff_grd_acc
+    diff_grd_acc /= diff_grd_count
     print(f'Results')
     print(f'Overall accuracy: {overall_accuracy}')
     print(f'Same grounding accuracy: {same_grd_acc}')
